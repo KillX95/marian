@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marian Movie 🎬</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background: #d32f2f;
+            padding: 15px;
+            margin: 0;
+        }
+        #movies {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .movie {
+            background: #1e1e1e;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .movie h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎬 Marian Movie - VOD 📽️</h1>
+    <div id="movies">Chargement des films...</div>
+
+    <script>
+        const API_KEY = "patsXANmzA1ar9yt4.108a5671c316b56f781fdd6a2401d4cf8591733d2f3771b5457379c533da9dcev"; // Remplacez par votre clé Airtable
+        const BASE_ID = "tblAEiOsEEn8wWwT9"; // Remplacez par l'ID de votre base
+        const TABLE_NAME = "Films"; // Nom de votre table Airtable
+
+        async function fetchMovies() {
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: { "Authorization": `Bearer ${API_KEY}` }
+              });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur API: ${response.status}`);
+                }
+
+        const data = await response.json();
+        console.log("Données récupérées :", data); // DEBUG: Voir les données dans la console
+
+        if (!data.records || data.records.length === 0) {
+            document.getElementById("movies").innerHTML = "<p>Aucun film trouvé.</p>";
+            return;
+        }
+
+        displayMovies(data.records);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des films :", error);
+        document.getElementById("movies").innerHTML = "<p>Impossible de charger les films.</p>";
+    }
+}
+
+
+        function displayMovies(movies) {
+            const container = document.getElementById("movies");
+            container.innerHTML = "";
+
+            movies.forEach(movie => {
+                const { fields } = movie;
+                const title = fields.Titre || "Sans titre";
+                const videoUrl = fields.Video[0].url || "";
+
+                const movieElement = document.createElement("div");
+                movieElement.classList.add("movie");
+
+                movieElement.innerHTML = `
+                    <h2>${title}</h2>
+                    <video controls>
+                        <source src="${videoUrl}" type="video/mp4">
+                        Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                `;
+
+                container.appendChild(movieElement);
+            });
+        }
+
+        fetchMovies();
+    </script>
+
+</body>
+</html>
