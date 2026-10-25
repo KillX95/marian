@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCoins</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="logo"><span class="coin">M</span>MCoins</div>
+    <button id="logout" class="ghost" hidden>Se déconnecter</button>
+  </header>
+
+  <main>
+    <!-- CONNEXION / INSCRIPTION -->
+    <section id="auth" class="card auth">
+      <h1>Envoie des MCoins à tes amis.</h1>
+      <p class="sub">Crée ton compte et reçois <strong id="startAmount">1000</strong> MCoins pour commencer.</p>
+      <div class="tabs" role="tablist">
+        <button id="tabLogin" class="tab active" type="button">Connexion</button>
+        <button id="tabRegister" class="tab" type="button">Inscription</button>
+      </div>
+      <div class="field"><label for="username">Nom d'utilisateur</label>
+        <input id="username" autocomplete="username" maxlength="20"></div>
+      <div class="field"><label for="password">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password"></div>
+      <button id="authBtn" class="primary" type="button">Se connecter</button>
+    </section>
+
+    <!-- TABLEAU DE BORD -->
+    <section id="dash" hidden>
+      <div class="grid">
+        <div class="card balance">
+          <p class="muted">Bonjour <strong id="hello"></strong></p>
+          <div class="amount"><span class="coin big">M</span><span id="balance">0</span></div>
+          <p class="muted">MCoins disponibles</p>
+        </div>
+
+        <div class="card ticket">
+          <p class="muted">Ton ID personnel — partage-le pour recevoir des MCoins</p>
+          <div class="idrow">
+            <code id="myId">—</code>
+            <button id="copyId" class="ghost" type="button">Copier</button>
+          </div>
+        </div>
+
+        <div class="card send">
+          <h2>Envoyer des MCoins</h2>
+          <div class="field"><label for="toId">ID du destinataire</label>
+            <input id="toId" placeholder="MC-XXXXXXXX" autocapitalize="characters"></div>
+          <div class="field"><label for="amount">Montant</label>
+            <input id="amount" type="number" min="1" step="1" placeholder="50"></div>
+          <button id="sendBtn" class="primary" type="button">Envoyer</button>
+        </div>
+
+        <div class="card history">
+          <h2>Historique</h2>
+          <ul id="txList"></ul>
+          <p id="txEmpty" class="muted" hidden>Aucune transaction. Envoie ou reçois tes premiers MCoins !</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
